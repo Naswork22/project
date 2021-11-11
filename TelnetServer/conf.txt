@@ -1,0 +1,38 @@
+root@telnetserver:~# cat /etc/debian_version 
+11.1
+root@telnetserver:~# 
+root@telnetserver:~# systemctl status inetd.service 
+? inetd.service - Internet superserver
+     Loaded: loaded (/lib/systemd/system/inetd.service; enabled; vendor preset: enabled)
+     Active: active (running) since Tue 2021-11-09 17:18:54 EST; 1 day 17h ago
+       Docs: man:inetd(8)
+   Main PID: 1981 (inetd)
+      Tasks: 1 (limit: 2287)
+     Memory: 1.0M
+        CPU: 8.329s
+     CGroup: /system.slice/inetd.service
+             +-1981 /usr/sbin/inetd
+
+Nov 09 17:18:54 telnetserver systemd[1]: Starting Internet superserver...
+Nov 09 17:18:54 telnetserver systemd[1]: Started Internet superserver.
+Nov 09 17:20:56 telnetserver in.telnetd[2110]: connect from 172.16.2.213 (172.16.2.213)
+Nov 09 17:21:06 telnetserver login[2111]: pam_unix(login:session): session opened for user root(uid=0) by (uid=0)
+Nov 09 17:24:51 telnetserver in.telnetd[2124]: connect from 172.16.2.211 (172.16.2.211)
+Nov 09 17:25:00 telnetserver login[2125]: pam_unix(login:session): session opened for user root(uid=0) by (uid=0)
+Nov 10 13:43:55 telnetserver in.telnetd[2899]: connect from 172.16.2.211 (172.16.2.211)
+Nov 10 13:44:06 telnetserver login[2900]: pam_unix(login:session): session opened for user root(uid=0) by (uid=0)
+Nov 10 13:47:03 telnetserver in.telnetd[2918]: connect from 172.16.2.211 (172.16.2.211)
+Nov 10 13:47:21 telnetserver login[2919]: pam_unix(login:session): session opened for user root(uid=0) by (uid=0)
+root@telnetserver:~# 
+root@telnetserver:~# netstat -tunlpa | grep 23
+tcp        0      0 0.0.0.0:23              0.0.0.0:*               LISTEN      1981/inetd          
+root@telnetserver:~# 
+root@telnetserver:~# 
+root@telnetserver:~# netstat -tunlpa | grep 23
+tcp        0      0 0.0.0.0:23              0.0.0.0:*               LISTEN      1981/inetd          
+tcp        0      0 172.16.2.214:23         172.16.2.211:43780      ESTABLISHED 3637/in.telnetd: 17 
+root@telnetserver:~# 
+root@telnetserver:~# netstat -tunlpa | grep 23
+tcp        0      0 0.0.0.0:23              0.0.0.0:*               LISTEN      1981/inetd          
+tcp        0      0 172.16.2.214:23         172.16.2.211:43780      TIME_WAIT   -                   
+root@telnetserver:~# 

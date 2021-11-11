@@ -1,0 +1,78 @@
+clientserver:~# cat /etc/network/interfaces 
+auto lo
+iface lo inet loopback
+
+auto eth0
+iface eth0 inet dhcp
+clientserver:~# 
+clientserver:~# ifconfig
+eth0      Link encap:Ethernet  HWaddr 00:0C:29:2E:57:CD  
+          inet addr:172.16.2.211  Bcast:172.16.2.255  Mask:255.255.255.0
+          inet6 addr: fe80::20c:29ff:fe2e:57cd/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:10922 errors:0 dropped:50 overruns:0 frame:0
+          TX packets:8142 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:2543114 (2.4 MiB)  TX bytes:895569 (874.5 KiB)
+
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:65536  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+
+clientserver:~# ip route
+default via 172.16.2.210 dev eth0  metric 202 
+172.16.2.0/24 dev eth0 scope link  src 172.16.2.211 
+clientserver:~# 
+clientserver:~# ping www.google.com -c 5
+PING www.google.com (142.250.181.4): 56 data bytes
+64 bytes from 142.250.181.4: seq=0 ttl=58 time=8.097 ms
+64 bytes from 142.250.181.4: seq=1 ttl=58 time=3.849 ms
+64 bytes from 142.250.181.4: seq=2 ttl=58 time=4.077 ms
+64 bytes from 142.250.181.4: seq=3 ttl=58 time=4.138 ms
+64 bytes from 142.250.181.4: seq=4 ttl=58 time=3.885 ms
+
+--- www.google.com ping statistics ---
+5 packets transmitted, 5 packets received, 0% packet loss
+round-trip min/avg/max = 3.849/4.809/8.097 ms
+clientserver:~# 
+clientserver:~# curl 172.16.2.212
+<html>
+   <head>
+      <title>My Website</title>
+   </head>
+   <body>
+      <h1>This is my Lab</h1>
+   </body>
+</html>
+clientserver:~# 
+clientserver:~# telnet 172.16.2.214
+Connected to 172.16.2.214
+
+Entering character mode
+Escape character is '^]'.
+
+Debian GNU/Linux 11
+telnetserver login: root
+Password: 
+Linux telnetserver 5.10.0-9-amd64 #1 SMP Debian 5.10.70-1 (2021-09-30) x86_64
+
+The programs included with the Debian GNU/Linux system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
+Last login: Thu Nov 11 10:37:06 EST 2021 from 192.168.2.160 on pts/0
+root@telnetserver:~# 
+root@telnetserver:~# ls
+root@telnetserver:~# cat /etc/debian_version 
+11.1
+root@telnetserver:~# exit
+logout
+Connection closed by foreign host
+clientserver:~# 

@@ -1,0 +1,57 @@
+Gateway Server:
+ls
+cat startGateway
+iptables -t nat -L -v -n
+
+DHCP Server:
+cat dhcpd.conf
+dhcpd -4 -f -d -cf ./dhcpd.conf --no-pid eth0
+cat /var/lib/dhcp/dhcpd.leases
+
+Client Server:
+cat /etc/network/interfaces
+ifconfig
+ip route
+ping www.google.com -c 3
+
+
+Web Server:
+cat /etc/nginx/nginx.conf
+cat /data/www/index.html
+netstat -na | grep 80
+
+On Web Cleint:
+curl 172.16.2.212
+
+On Web Server:
+cat /var/log/nginx/access.log
+
+Ftp Server:
+vsftpd -version
+grep -v ^\# /etc/vsftpd.conf
+cat /etc/vsftpd.userlist
+netstat -tunlpa | grep 22
+
+On Telnet Server:
+systemctl status inetd
+netstat -tunlpa | grep 23
+
+On Telnet Client:
+telnet 172.16.2.214
+
+On Database Server:
+/etc/init.d/mariadb setup
+mysql_secure_installation
+mysql -u root -p
+create database labdb;
+show databases;
+create user labuser@localhost identified by "root123";
+grant all on labdb.* to labuser@localhost;
+flush priviliges;
+select user, password, host from mysql.user;
+quit
+
+mysql -u labuser -p
+show databases;
+use labdb;
+show tables;

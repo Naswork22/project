@@ -1,0 +1,292 @@
+databaseserver:~# /etc/init.d/mariadb setup
+ * Creating a new MySQL database ...
+Installing MariaDB/MySQL system tables in '/var/lib/mysql' ...
+OK
+
+To start mysqld at boot time you have to copy
+support-files/mysql.server to the right place for your system
+
+
+Two all-privilege accounts were created.
+One is root@localhost, it has no password, but you need to
+be system 'root' user to connect. Use, for example, sudo mysql
+The second is mysql@localhost, it has no password either, but
+you need to be the system 'mysql' user to connect.
+After connecting you can set the password, if you would need to be
+able to connect as any of these users with a password and without sudo
+
+See the MariaDB Knowledgebase at https://mariadb.com/kb or the
+MySQL manual for more instructions.
+
+You can start the MariaDB daemon with:
+cd '/usr' ; /usr/bin/mysqld_safe --datadir='/var/lib/mysql'
+
+You can test the MariaDB daemon with mysql-test-run.pl
+cd '/usr/mysql-test' ; perl mysql-test-run.pl
+
+Please report any problems at https://mariadb.org/jira
+
+The latest information about MariaDB is available at https://mariadb.org/.
+You can find additional information about the MySQL part at:
+https://dev.mysql.com
+Consider joining MariaDB's strong and vibrant community:
+https://mariadb.org/get-involved/
+                                                                          [ ok ]
+databaseserver:~# rc-service mariadb start
+ * Starting mariadb ...
+211109 22:01:03 mysqld_safe Logging to syslog.
+211109 22:01:03 mysqld_safe Starting mariadbd daemon with databases from /var/lib/mysql                                                                   [ ok ]
+databaseserver:~# 
+databaseserver:~# rc-update add mariadb default
+ * service mariadb added to runlevel default
+databaseserver:~# rc-status default
+Runlevel: default
+ mariadb                                                           [  started  ]
+ crond                                                             [  started  ]
+ chronyd                                                           [  started  ]
+ acpid                                                             [  started  ]
+ sshd                                                              [  started  ]
+databaseserver:~# mysql_secure_installation 
+
+NOTE: RUNNING ALL PARTS OF THIS SCRIPT IS RECOMMENDED FOR ALL MariaDB
+      SERVERS IN PRODUCTION USE!  PLEASE READ EACH STEP CAREFULLY!
+
+In order to log into MariaDB to secure it, we'll need the current
+password for the root user. If you've just installed MariaDB, and
+haven't set the root password yet, you should just press enter here.
+
+Enter current password for root (enter for none): 
+OK, successfully used password, moving on...
+
+Setting the root password or using the unix_socket ensures that nobody
+can log into the MariaDB root user without the proper authorisation.
+
+You already have your root account protected, so you can safely answer 'n'.
+
+Switch to unix_socket authentication [Y/n] y
+Enabled successfully!
+Reloading privilege tables..
+ ... Success!
+
+
+You already have your root account protected, so you can safely answer 'n'.
+
+Change the root password? [Y/n] n
+ ... skipping.
+
+By default, a MariaDB installation has an anonymous user, allowing anyone
+to log into MariaDB without having to have a user account created for
+them.  This is intended only for testing, and to make the installation
+go a bit smoother.  You should remove them before moving into a
+production environment.
+
+Remove anonymous users? [Y/n] y
+ ... Success!
+
+Normally, root should only be allowed to connect from 'localhost'.  This
+ensures that someone cannot guess at the root password from the network.
+
+Disallow root login remotely? [Y/n] y
+ ... Success!
+
+By default, MariaDB comes with a database named 'test' that anyone can
+access.  This is also intended only for testing, and should be removed
+before moving into a production environment.
+
+Remove test database and access to it? [Y/n] y
+ - Dropping test database...
+ ... Success!
+ - Removing privileges on test database...
+ ... Success!
+
+Reloading the privilege tables will ensure that all changes made so far
+will take effect immediately.
+
+Reload privilege tables now? [Y/n] y
+ ... Success!
+
+Cleaning up...
+
+All done!  If you've completed all of the above steps, your MariaDB
+installation should now be secure.
+
+Thanks for using MariaDB!
+databaseserver:~# mysql -u root -p
+Enter password: 
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 11
+Server version: 10.5.12-MariaDB MariaDB Server
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
++--------------------+
+3 rows in set (0.001 sec)
+
+MariaDB [(none)]> create database labdb;
+Query OK, 1 row affected (0.000 sec)
+
+MariaDB [(none)]> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| labdb              |
+| mysql              |
+| performance_schema |
++--------------------+
+4 rows in set (0.001 sec)
+
+MariaDB [(none)]> create user labuser@localhost identified by "root123";
+Query OK, 0 rows affected (0.006 sec)
+
+MariaDB [(none)]> grant all on labdb.* to labuser@localhost;
+Query OK, 0 rows affected (0.006 sec)
+
+MariaDB [(none)]> flush priviliges;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'priviliges' at line 1
+MariaDB [(none)]> flush privileges;
+Query OK, 0 rows affected (0.001 sec)
+
+MariaDB [(none)]> quit
+Bye
+databaseserver:~# mysql -u labuser -p
+Enter password: 
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 12
+Server version: 10.5.12-MariaDB MariaDB Server
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| labdb              |
++--------------------+
+2 rows in set (0.001 sec)
+
+MariaDB [(none)]> 
+MariaDB [(none)]> use information_schhema;
+ERROR 1044 (42000): Access denied for user 'labuser'@'localhost' to database 'information_schhema'
+MariaDB [(none)]> use information_schema; 
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+MariaDB [information_schema]> 
+MariaDB [information_schema]> 
+MariaDB [information_schema]> show tables;
++---------------------------------------+
+| Tables_in_information_schema          |
++---------------------------------------+
+| ALL_PLUGINS                           |
+| APPLICABLE_ROLES                      |
+| CHARACTER_SETS                        |
+| CHECK_CONSTRAINTS                     |
+| COLLATIONS                            |
+| COLLATION_CHARACTER_SET_APPLICABILITY |
+| COLUMNS                               |
+| COLUMN_PRIVILEGES                     |
+| ENABLED_ROLES                         |
+| ENGINES                               |
+| EVENTS                                |
+| FILES                                 |
+| GLOBAL_STATUS                         |
+| GLOBAL_VARIABLES                      |
+| KEYWORDS                              |
+| KEY_CACHES                            |
+| KEY_COLUMN_USAGE                      |
+| OPTIMIZER_TRACE                       |
+| PARAMETERS                            |
+| PARTITIONS                            |
+| PLUGINS                               |
+| PROCESSLIST                           |
+| PROFILING                             |
+| REFERENTIAL_CONSTRAINTS               |
+| ROUTINES                              |
+| SCHEMATA                              |
+| SCHEMA_PRIVILEGES                     |
+| SESSION_STATUS                        |
+| SESSION_VARIABLES                     |
+| STATISTICS                            |
+| SQL_FUNCTIONS                         |
+| SYSTEM_VARIABLES                      |
+| TABLES                                |
+| TABLESPACES                           |
+| TABLE_CONSTRAINTS                     |
+| TABLE_PRIVILEGES                      |
+| TRIGGERS                              |
+| USER_PRIVILEGES                       |
+| VIEWS                                 |
+| CLIENT_STATISTICS                     |
+| INDEX_STATISTICS                      |
+| INNODB_SYS_DATAFILES                  |
+| GEOMETRY_COLUMNS                      |
+| INNODB_SYS_TABLESTATS                 |
+| SPATIAL_REF_SYS                       |
+| INNODB_BUFFER_PAGE                    |
+| INNODB_TRX                            |
+| INNODB_CMP_PER_INDEX                  |
+| INNODB_METRICS                        |
+| INNODB_LOCK_WAITS                     |
+| INNODB_CMP                            |
+| THREAD_POOL_WAITS                     |
+| INNODB_CMP_RESET                      |
+| THREAD_POOL_QUEUES                    |
+| TABLE_STATISTICS                      |
+| INNODB_SYS_FIELDS                     |
+| INNODB_BUFFER_PAGE_LRU                |
+| INNODB_LOCKS                          |
+| INNODB_FT_INDEX_TABLE                 |
+| INNODB_CMPMEM                         |
+| THREAD_POOL_GROUPS                    |
+| INNODB_CMP_PER_INDEX_RESET            |
+| INNODB_SYS_FOREIGN_COLS               |
+| INNODB_FT_INDEX_CACHE                 |
+| INNODB_BUFFER_POOL_STATS              |
+| INNODB_FT_BEING_DELETED               |
+| INNODB_SYS_FOREIGN                    |
+| INNODB_CMPMEM_RESET                   |
+| INNODB_FT_DEFAULT_STOPWORD            |
+| INNODB_SYS_TABLES                     |
+| INNODB_SYS_COLUMNS                    |
+| INNODB_FT_CONFIG                      |
+| USER_STATISTICS                       |
+| INNODB_SYS_TABLESPACES                |
+| INNODB_SYS_VIRTUAL                    |
+| INNODB_SYS_INDEXES                    |
+| INNODB_SYS_SEMAPHORE_WAITS            |
+| INNODB_MUTEXES                        |
+| user_variables                        |
+| INNODB_TABLESPACES_ENCRYPTION         |
+| INNODB_FT_DELETED                     |
+| THREAD_POOL_STATS                     |
++---------------------------------------+
+82 rows in set (0.002 sec)
+
+MariaDB [(none)]> select user, password, host from mysql.user;
++-------------+-------------------------------------------+-----------+
+| User        | Password                                  | Host      |
++-------------+-------------------------------------------+-----------+
+| mariadb.sys |                                           | localhost |
+| root        | invalid                                   | localhost |
+| mysql       | invalid                                   | localhost |
+| labuser     | *FAAFFE644E901CFAFAEC7562415E5FAEC243B8B2 | localhost |
++-------------+-------------------------------------------+-----------+
+4 rows in set (0.004 sec)
+
+MariaDB [(none)]> quit
+Bye
+databaseserver:~# 

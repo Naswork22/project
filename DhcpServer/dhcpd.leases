@@ -1,0 +1,90 @@
+# The format of this file is documented in the dhcpd.leases(5) manual page.
+# This lease file was written by isc-dhcp-4.4.2-P1
+
+# authoring-byte-order entry is generated, DO NOT DELETE
+authoring-byte-order little-endian;
+
+lease 172.16.2.211 {
+  starts 4 2021/11/11 16:40:49;
+  ends 4 2021/11/11 16:50:49;
+  cltt 4 2021/11/11 16:40:49;
+  binding state active;
+  next binding state free;
+  rewind binding state free;
+  hardware ethernet 00:0c:29:2e:57:cd;
+  uid "\001\000\014).W\315";
+  set vendor-class-identifier = "udhcp 1.33.1";
+  client-hostname "clientserver";
+}
+lease 172.16.2.211 {
+  starts 4 2021/11/11 16:45:49;
+  ends 4 2021/11/11 16:55:49;
+  cltt 4 2021/11/11 16:45:49;
+  binding state active;
+  next binding state free;
+  rewind binding state free;
+  hardware ethernet 00:0c:29:2e:57:cd;
+  uid "\001\000\014).W\315";
+  set vendor-class-identifier = "udhcp 1.33.1";
+  client-hostname "clientserver";
+}
+lease 172.16.2.211 {
+  starts 4 2021/11/11 16:50:49;
+  ends 4 2021/11/11 17:00:49;
+  cltt 4 2021/11/11 16:50:49;
+  binding state active;
+  next binding state free;
+  rewind binding state free;
+  hardware ethernet 00:0c:29:2e:57:cd;
+  uid "\001\000\014).W\315";
+  set vendor-class-identifier = "udhcp 1.33.1";
+  client-hostname "clientserver";
+}
+lease 172.16.2.211 {
+  starts 4 2021/11/11 16:55:49;
+  ends 4 2021/11/11 17:05:49;
+  cltt 4 2021/11/11 16:55:49;
+  binding state active;
+  next binding state free;
+  rewind binding state free;
+  hardware ethernet 00:0c:29:2e:57:cd;
+  uid "\001\000\014).W\315";
+  set vendor-class-identifier = "udhcp 1.33.1";
+  client-hostname "clientserver";
+}
+lease 172.16.2.211 {
+  starts 4 2021/11/11 17:00:49;
+  ends 4 2021/11/11 17:10:49;
+  cltt 4 2021/11/11 17:00:49;
+  binding state active;
+  next binding state free;
+  rewind binding state free;
+  hardware ethernet 00:0c:29:2e:57:cd;
+  uid "\001\000\014).W\315";
+  set vendor-class-identifier = "udhcp 1.33.1";
+  client-hostname "clientserver";
+}
+lease 172.16.2.211 {
+  starts 4 2021/11/11 17:05:49;
+  ends 4 2021/11/11 17:15:49;
+  cltt 4 2021/11/11 17:05:49;
+  binding state active;
+  next binding state free;
+  rewind binding state free;
+  hardware ethernet 00:0c:29:2e:57:cd;
+  uid "\001\000\014).W\315";
+  set vendor-class-identifier = "udhcp 1.33.1";
+  client-hostname "clientserver";
+}
+lease 172.16.2.211 {
+  starts 4 2021/11/11 17:10:50;
+  ends 4 2021/11/11 17:20:50;
+  cltt 4 2021/11/11 17:10:50;
+  binding state active;
+  next binding state free;
+  rewind binding state free;
+  hardware ethernet 00:0c:29:2e:57:cd;
+  uid "\001\000\014).W\315";
+  set vendor-class-identifier = "udhcp 1.33.1";
+  client-hostname "clientserver";
+}
